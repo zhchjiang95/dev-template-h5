@@ -1,10 +1,14 @@
 /**
  *
- *
  * @export
  * @param {*} key
  * @封装常用方法
+ * 
  */
+
+import md5 from 'js-md5' 
+
+console.log(md5('fiume.cn'))
 
 // 格式化url查询参数，返回对象
 export function formatQueryParam(key) {
