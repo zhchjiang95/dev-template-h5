@@ -1,32 +1,14 @@
 /**
- *
- * @export
+ * @https://github.com/zhchjiang95/dev-template-h5
  * @param {*} key
  * @封装常用方法
- * 
  */
 
-import md5 from 'js-md5' 
+import md5 from 'js-md5'
+import { slideDirection } from '../utils/JTools'
 
 console.log(md5('fiume.cn'))
-
-// 格式化url查询参数，返回对象
-export function formatQueryParam(key) {
-  const paramArr = location.href.split('?')[1] ? location.href.split('?')[1].split('#/')[0].split('&').map(a => ({ [a.split('=')[0]]: a.split('=')[1] })) : []
-  return key ? paramArr.find(a => a[`${key}`] !== undefined) ? paramArr.find(a => a[`${key}`] !== undefined) : {} : paramArr
-}
-
-// 移动端滑动，cls：容器类名，callback：参数为开始结束X，Y轴的值
-export function slidingDirection(cls, callback){
-  let startX = 0, startY = 0, el = document.querySelector(`${cls}`)
-  el.addEventListener('touchstart', function(e){
-      startX = e.changedTouches[0].clientX
-      startY = e.changedTouches[0].clientY
-  }, false)
-  el.addEventListener('touchend', function(e){
-      callback({startX, startY, enX: e.changedTouches[0].clientX, enY: e.changedTouches[0].clientY})
-  }, false)
-}
+slideDirection('body', (res) => {console.log(res)})
 
 // HTTP请求
 export const HTTP = {

@@ -1,4 +1,5 @@
-# H5开发模板：Vant UI+Vue+Vue Router+Vuex+Less+Rem
+## H5开发模板
+Vant UI + Vue + Vue Router + Vuex + Less + Rem自适应
 
 ## Project clone
 ```
@@ -28,6 +29,3 @@ npm run build
 yarn lint
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
