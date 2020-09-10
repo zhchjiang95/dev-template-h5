@@ -1,5 +1,5 @@
 /**
- * JTools.js v1.2:
+ * JTools.js v1.2.1:
  * 使用文档：http://fiume.cn/jtools/
  */
 
@@ -12,28 +12,38 @@
   /*  */
 
   function JTools() {
-    this.slideDirection = function(selector, callback){
-      let startX = 0, startY = 0, endX = 0, endY = 0, el = document.querySelector(`${selector}`)
+    this.slideDirection = function(selector, callback, real = false, realStartEnd = false){
+      let startX = 0, startY = 0, endX = 0, endY = 0, realX = 0, realY = 0, el = document.querySelector(`${selector}`)
       if(el.ontouchstart === null){
-        el.addEventListener('touchstart', function(e){
+        el.ontouchstart = function(e){
           startX = e.changedTouches[0].clientX
           startY = e.changedTouches[0].clientY
-        }, false)
-        el.addEventListener('touchend', function(e){
+        }
+        real&&(el.ontouchmove = function(e){
+          realX = e.changedTouches[0].clientX
+          realY = e.changedTouches[0].clientY
+          callback(realStartEnd ? {startX, startY, endX, endY} : {}, {realX, realY})
+        })
+        el.ontouchend = function(e){
           endX = e.changedTouches[0].clientX
           endY = e.changedTouches[0].clientY
-          callback({startX, startY, endX, endY})
-        }, false)
+          callback({startX, startY, endX, endY}, {realX, realY})
+        }
       } else {
-        el.addEventListener('mousedown', function(e){
+        el.onmousedown = function(e){
           startX = e.clientX
           startY = e.clientY
+        }
+        real&&(el.onmousemove = function(e){
+          realX = e.clientX
+          realY = e.clientY
+          callback(realStartEnd ? {startX, startY, endX, endY} : {}, {realX, realY})
         })
-        el.addEventListener('mouseup', function(e){
+        el.onmouseup = function(e){
           endX = e.clientX
           endY = e.clientY
-          callback({startX, startY, endX, endY})
-        })
+          callback({startX, startY, endX, endY}, {realX, realY})
+        }
       } 
     }
 
@@ -63,20 +73,17 @@
       if(Number(anchor).toString() !== 'NaN'){
         var _anchor = anchor
       } else {
-        console.error('请输入目标位置，且该值应为数字');
-        return
+        throw Error('请输入目标位置，且该值应为数字')
       }
       if(Number(speed).toString() !== 'NaN'){
         var _speed = speed
       } else {
-        console.error('请输入滑动速度，且该值应为数字');
-        return
+        throw Error('请输入滑动速度，且该值应为数字')
       }
       if(typeof direction === 'boolean'){
         var _direction = direction
       } else {
-        console.error('请输入滑动方向，且该值应为true/false');
-        return
+        throw Error('请输入滑动方向，且该值应为true/false')
       }
       (function foo() {
         if (_direction) {
@@ -100,7 +107,7 @@
 
     this.boxAnchor = function(sourceSelector, targetSelector, diff = 4, speed = 20) {
       document.querySelector(sourceSelector).onclick = function(e){
-        var id = '#' + e.target.dataset.jtId
+        var id = '#' + (/^[.|#]/.test(sourceSelector) ? this.dataset.jtId : e.target.dataset.jtId)
         var target = document.querySelector(id)
         var box = document.querySelector(targetSelector)
         if(!target) return

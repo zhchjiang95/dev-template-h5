@@ -6,9 +6,7 @@
 </template>
 
 <script>
-import {
-  formatQueryParam
-} from "../utils/JTools"
+import { formatQueryParam } from "../utils/JTools"
 import NavBar from '../components/NavBar'
 export default {
   name: "detail",
