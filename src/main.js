@@ -1,17 +1,11 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
-import './registerServiceWorker'
-import 'amfe-flexible'
 import router from './router'
 import store from './store'
-import { Button, Icon, Empty, Loading, NavBar, Toast } from 'vant'
+import 'amfe-flexible'
 
-Vue.use(Button).use(Icon).use(Empty).use(Loading).use(NavBar).use(Toast)
+import { Empty, Button, Tab, Tabs, Icon, Loading, Popup  } from 'vant';
 
-Vue.config.productionTip = false
+const app = createApp(App)
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+app.use(store).use(router).use(Empty).use(Button).use(Tab).use(Tabs).use(Icon).use(Loading).use(Popup).mount('#app')

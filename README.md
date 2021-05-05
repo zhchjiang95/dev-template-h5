@@ -1,31 +1,31 @@
-## H5开发模板
-Vant UI + Vue + Vue Router + Vuex + Less + Rem自适应
-
-## Project clone
-```
-git clone git@github.com:zhchjiang95/development-template-h5.git
-```
+# 模板例子，基于 Vue 3.0
 
 ## Project setup
 ```
-yarn install
-npm install
+yarn / npm i
 ```
 
-### Compiles and hot-reloads for development
+### 开发测试
 ```
-yarn serve
-npm run serve
+yarn serve / npm run serve
 ```
 
-### Compiles and minifies for production
+### 开发生产
 ```
-yarn build
-npm run build
+yarn serve:prod / npm run serve:prod
+```
+
+### 打包测试
+```
+yarn build:test / npm run build:test
+```
+
+### 打包生产
+```
+yarn build:prod / npm run build:prod
 ```
 
 ### Lints and fixes files
 ```
 yarn lint
-npm run lint
 ```

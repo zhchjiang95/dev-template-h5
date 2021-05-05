@@ -1,46 +1,49 @@
-/**
- * @https://github.com/zhchjiang95/dev-template-h5
- * @param {*} key
- * @封装常用方法
- */
+import { reactive, effect } from '@vue/reactivity'
+import { Toast } from 'vant'
 
-import md5 from 'js-md5'
-import { slideDirection } from '../utils/JTools'
+export const HOST = 'https://baidu.com'
+export const URL = process.env.VUE_APP_ENV === 'prod' ? '/' : '/test'
 
-console.log(md5('fiume.cn'))
-slideDirection('body', (res) => {console.log(res)})
 
-// HTTP请求
-export const HTTP = {
-  get: async (url, callback) => {
-    await fetch(url).then(res => res.json()).then(response => callback(response))
-  },
-  
-  post: async (url, data, callback) => {
-    await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data), // param can be `string` or {object}!
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(res => res.json())
-    .catch(error => callback(error))
-    .then(response => callback(response))
-  },
-
-  postFiles: async (url, data = {}, callback) => {
-    let formData = new FormData()
-    Object.keys(data).map(v => {
-      // 多文件上传 append 到一个 key 中
-      formData.append(v, data[v])
-    })
-
-    await fetch(url, {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .catch(error => callback(error))
-    .then(response => callback(response))
+// 判断设备
+export function judgeOS() {
+  const u = navigator.userAgent;
+  return {
+    Android: u.indexOf("Android") > -1 || u.indexOf("Adr") > -1,
+    iOS: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
   }
-};
+}
+
+/** 
+ * 读值和设值 sessionStorage
+ * 传入 key, 读值；传入 key、defaultValue，设值
+ */
+export const useSessionStorage = (key, defaultValue = []) => {
+  let data = reactive({})
+  Object.assign(data, sessionStorage[key] && JSON.parse(sessionStorage[key]) || defaultValue)
+  effect(() => sessionStorage[key] = JSON.stringify(data));
+  return data
+}
+
+/** 
+ * 提示函数 
+ * 禁止点击蒙层
+ */
+export const Tips = (type, msg, duration = 2000) => {
+  const icon = { success: 'success', error: 'cross', warning: 'fail' }
+  if (type === 'loading') {
+    // Toast.clear() 异步关闭
+    return Toast.loading({
+      duration: 0,
+      forbidClick: true,
+      message: msg,
+    });
+  } else {
+    Toast({
+      message: msg,
+      icon: icon[type],
+      duration: duration,
+      forbidClick: true
+    });
+  }
+}
